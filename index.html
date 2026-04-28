@@ -2,16 +2,70 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Ảnh chạy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    margin: 0;
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* KHUNG SLIDER */
+.slider {
+    width: 400px;
+    height: 450px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+/* DANH SÁCH ẢNH */
+.slides {
+    display: flex;
+    width: 500%;
+    height: 100%;
+    animation: slide 20s infinite;
+}
+
+.slides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* HIỆU ỨNG CHẠY */
+@keyframes slide {
+    0%   { margin-left: 0; }
+    20%  { margin-left: 0; }
+
+    25%  { margin-left: -100%; }
+    45%  { margin-left: -100%; }
+
+    50%  { margin-left: -200%; }
+    70%  { margin-left: -200%; }
+
+    75%  { margin-left: -300%; }
+    95%  { margin-left: -300%; }
+
+    100% { margin-left: -400%; }
+}
+</style>
+
 </head>
 <body>
 
-<marquee behavior="scroll" direction="left" scrollamount="5">
-    <img src="https://drive.google.com/uc?export=view&id=1yoEsqFlkndR33mssA9B64xh57NcB5ids" width="400";height="450">
-    <img src="https://drive.google.com/uc?export=view&id=18xpnrK7VhFZ6UzZrOOpeF8j5z29EbWQo" width="400";height="450">
-    <img src="https://drive.google.com/uc?export=view&id=1q6cTg2gZvUVKBTxmhwWNpBgv7lX7DYsB" width="400";height="450">
-	<img src="https://drive.google.com/uc?export=view&id=1MUF37ddmwXNbPDaLq4va9BbPnj8KEaCf" width="400";height="450">
-	<img src="https://drive.google.com/uc?export=view&id=12SUZQMAhIajiBRlWsE6TY1xVNIpx5zQt" width="400";height="450">
-</marquee>
+<div class="slider">
+    <div class="slides">
+        <img src="images/anh1.jpg">
+        <img src="images/anh2.jpg">
+        <img src="images/anh3.jpg">
+        <img src="images/anh4.jpg">
+        <img src="images/anh5.jpg">
+    </div>
+</div>
 </body>
 </html>
