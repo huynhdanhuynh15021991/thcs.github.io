@@ -18,24 +18,30 @@ body {
 .slider {
     width: 400px;
     height: 450px;
+    position: relative;
     overflow: hidden;
     border-radius: 12px;
-    position: relative;
 }
 
-/* SLIDES */
-.slides {
-    display: flex;
-    width: 500%;
+/* ẢNH */
+.slide {
+    position: absolute;
+    width: 100%;
     height: 100%;
-    transition: transform 0.6s ease-in-out;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
-.slides img {
+.slide img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     background: black;
+}
+
+/* ẢNH HIỆN */
+.active {
+    opacity: 1;
 }
 
 /* NÚT */
@@ -46,9 +52,8 @@ body {
     background: rgba(0,0,0,0.5);
     color: white;
     border: none;
-    padding: 10px;
+    padding: 8px;
     cursor: pointer;
-    font-size: 18px;
 }
 
 .prev { left: 5px; }
@@ -65,14 +70,14 @@ body {
 .dot {
     height: 10px;
     width: 10px;
-    margin: 5px;
-    display: inline-block;
     background: gray;
+    margin: 4px;
+    display: inline-block;
     border-radius: 50%;
     cursor: pointer;
 }
 
-.active {
+.dot.active {
     background: white;
 }
 </style>
@@ -82,78 +87,64 @@ body {
 
 <div class="slider" id="slider">
 
-    <div class="slides" id="slides">
-        <img src="images/VD1.jpg">
-        <img src="images/VD2.jpg">
-        <img src="images/VD3.jpg">
-        <img src="images/VD4.jpg">
-        <img src="images/VD5.jpg">
-    </div>
+    <div class="slide active"><img src="images/VD1.jpg"></div>
+    <div class="slide"><img src="images/VD2.jpg"></div>
+    <div class="slide"><img src="images/VD3.jpg"></div>
+    <div class="slide"><img src="images/VD4.jpg"></div>
+    <div class="slide"><img src="images/VD5.jpg"></div>
 
-    <!-- Nút -->
-    <button class="btn prev" onclick="prevSlide()">❮</button>
-    <button class="btn next" onclick="nextSlide()">❯</button>
+    <button class="btn prev" onclick="prev()">❮</button>
+    <button class="btn next" onclick="next()">❯</button>
 
-    <!-- Dots -->
     <div class="dots" id="dots"></div>
 
 </div>
 
 <script>
 let index = 0;
-const slides = document.getElementById("slides");
-const total = slides.children.length;
+const slides = document.querySelectorAll(".slide");
 const dotsContainer = document.getElementById("dots");
 
 // tạo dots
-for (let i = 0; i < total; i++) {
+slides.forEach((_, i) => {
     let dot = document.createElement("span");
     dot.className = "dot";
-    dot.onclick = () => goToSlide(i);
+    dot.onclick = () => go(i);
     dotsContainer.appendChild(dot);
-}
-
-function updateSlider() {
-    slides.style.transform = "translateX(" + (-index * 100) + "%)";
-    document.querySelectorAll(".dot").forEach((d, i) => {
-        d.classList.toggle("active", i === index);
-    });
-}
-
-function nextSlide() {
-    index = (index + 1) % total;
-    updateSlider();
-}
-
-function prevSlide() {
-    index = (index - 1 + total) % total;
-    updateSlider();
-}
-
-function goToSlide(i) {
-    index = i;
-    updateSlider();
-}
-
-// auto chạy
-let auto = setInterval(nextSlide, 4000);
-
-// dừng khi rê chuột
-document.getElementById("slider").addEventListener("mouseenter", () => clearInterval(auto));
-document.getElementById("slider").addEventListener("mouseleave", () => auto = setInterval(nextSlide, 4000));
-
-// vuốt tay mobile
-let startX = 0;
-slider.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-
-slider.addEventListener("touchend", e => {
-    let endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) nextSlide();
-    if (endX - startX > 50) prevSlide();
 });
 
+function showSlide(i) {
+    slides.forEach(s => s.classList.remove("active"));
+    document.querySelectorAll(".dot").forEach(d => d.classList.remove("active"));
+
+    slides[i].classList.add("active");
+    document.querySelectorAll(".dot")[i].classList.add("active");
+}
+
+function next() {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+}
+
+function prev() {
+    index = (index - 1 + slides.length) % slides.length;
+    showSlide(index);
+}
+
+function go(i) {
+    index = i;
+    showSlide(index);
+}
+
+// auto chạy CHẬM & MƯỢT
+let auto = setInterval(next, 5000);
+
+// dừng khi rê chuột
+slider.onmouseenter = () => clearInterval(auto);
+slider.onmouseleave = () => auto = setInterval(next, 5000);
+
 // khởi tạo
-updateSlider();
+showSlide(0);
 </script>
 
 </body>
